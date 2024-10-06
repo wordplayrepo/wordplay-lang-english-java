@@ -20,28 +20,55 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.syphr</groupId>
+    <groupId>org.syphr.wordplay</groupId>
     <artifactId>wordplay-lang-english</artifactId>
     <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <name>WordPlay English Language Pack</name>
     <description>English language pack for the WordPlay framework.</description>
     <inceptionYear>2012</inceptionYear>
+    <url>https://github.com/wordplayrepo/wordplay-lang-english-java</url>
 
     <organization>
         <name>Gregory P. Moyer</name>
     </organization>
 
+    <developers>
+        <developer>
+            <name>Gregory Moyer</name>
+            <email>greg@commitpush.run</email>
+            <url>https://commitpush.run</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>
+            scm:git:git://github.com/wordplayrepo/wordplay-lang-english-java.git</connection>
+        <developerConnection>
+            scm:git:ssh://github.com:wordplayrepo/wordplay-lang-english-java.git</developerConnection>
+        <url>http://github.com/wordplayrepo/wordplay-lang-english-java/tree/main</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <junit-jupiter.version>5.11.0</junit-jupiter.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.syphr</groupId>
+            <groupId>org.syphr.wordplay</groupId>
             <artifactId>wordplay-core</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <scope>compile</scope>
@@ -73,12 +100,12 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.5</version>
+                <version>4.6</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.mycila</groupId>
                         <artifactId>license-maven-plugin-git</artifactId>
-                        <version>4.5</version>
+                        <version>4.6</version>
                     </dependency>
                 </dependencies>
 
@@ -106,4 +133,76 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>ossrh-release</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.10.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.7</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.7.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
